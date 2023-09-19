@@ -14,6 +14,7 @@ $(document).ready(function () {
   
     // Listen for the "tilt" event on the parallax-image element
     $('.parallax-image').on('tilt', function (event, angle) {
+      console.log(event, angle);
       if (angle > 30) {
         // If the tilt angle is greater than 30 degrees, switch to the alternate image
         $(this).css('background-image', 'url(' + alternateImageURL + ')');
