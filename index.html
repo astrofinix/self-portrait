@@ -7,9 +7,13 @@
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
       defer></script>
+      <script
+      src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+      defer></script>
     <script
       src="https://cdn.rawgit.com/gijsroge/tilt.js/38991dd7/dest/tilt.jquery.js"
       defer></script>
+    <script src="script.js" defer></script>
     <script src="script.js" defer></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
@@ -22,6 +26,9 @@
 
         <div class="product-desc">
           <h1>Jude Péan</h1>
+          <p>This Example just print's the raw accelerometer and gyro data.<br>Will return null if no device information is found.</p>
+	<p>gyro.getFeatures: <span id="features"></span></p>
+	<span id="example"></span>
         </div>
       </div>
     </div>
