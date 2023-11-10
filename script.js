@@ -41,21 +41,38 @@ $(".parallax-image").on("change", function (event, angle) {
 
 // sensor.start();
 
-if ('Gyroscope' in window) {
-  let gyroscope = new Gyroscope({ frequency: 60 });
+// if ('Gyroscope' in window) {
+//   let gyroscope = new Gyroscope({ frequency: 60 });
 
-  gyroscope.addEventListener("reading", () => {
-    document.getElementById("output1").textContent = 
-      `Angular velocity along the X-axis: ${gyroscope.x}, Angular velocity along the Y-axis: ${gyroscope.y}`;
-  });
+//   gyroscope.addEventListener("reading", () => {
+//     document.getElementById("output1").textContent = 
+//       `Angular velocity along the X-axis: ${gyroscope.x}, Angular velocity along the Y-axis: ${gyroscope.y}`;
+//   });
 
-  gyroscope.addEventListener("error", (event) => {
-    console.error("Error accessing gyroscope:", event.error);
-  });
+//   gyroscope.addEventListener("error", (event) => {
+//     console.error("Error accessing gyroscope:", event.error);
+//   });
 
-  gyroscope.start();
-} else {
-  document.getElementById("output1").textContent = "Gyroscope not supported on this device/browser.";
+//   gyroscope.start();
+// } else {
+//   document.getElementById("output1").textContent = "Gyroscope not supported on this device/browser.";
+// }
+function onClick() {
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    // Handle iOS 13+ devices.
+    DeviceMotionEvent.requestPermission()
+      .then((state) => {
+        if (state === 'granted') {
+          window.addEventListener('devicemotion', handleOrientation);
+        } else {
+          document.getElementById("output1").textContent = 'Request to access the orientation was rejected';
+        }
+      })
+      .catch(console.error);
+  } else {
+    // Handle regular non iOS 13+ devices.
+    window.addEventListener('devicemotion', handleOrientation);
+  }
 }
 //sensor.onreading = () => {
 //sensor.getElementById("output1").textContent =
