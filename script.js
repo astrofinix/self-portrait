@@ -32,7 +32,7 @@ $(".parallax-image").on("change", function (event, angle) {
 });
 
 
-let gyroscope = new gyroscope({ frequency: 60});
+let gyroscope = new Gyroscope({ frequency: 60});
 
 gyroscope.setEventListener("reading", () => {
     document.getElementById("output1").textContent = 
