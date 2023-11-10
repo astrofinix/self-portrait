@@ -33,14 +33,21 @@ $(".parallax-image").on("change", function (event, angle) {
   }
 });
 
-let gyroscope = new Gyroscope({ frequency: 60 });
+let sensor = new Gyroscope();
+let x, y, z, report;
+//sensor.setEventListener("reading", () => {
+  //document.getElementById("output1").textContent =
+  //  sensor.x + "<-->" + sensor.y;
+//});
 
-gyroscope.setEventListener("reading", () => {
-  document.getElementById("output1").textContent =
-    gyroscope.x + "<-->" + gyroscope.y;
-});
-
-gyroscope.start();
+sensor.start();
+sensor.onreading = () => {
+  sensor.getElementById("output1").textContent =
+    sensor.x + "<-->" + sensor.y;
+}
+function errprHandler(event) {
+  console.log(event.error.name, event.error.message);
+}
 
 //window.addEventListener("deviceorientation", handleOrientation);
 
