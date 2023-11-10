@@ -32,10 +32,20 @@ $(".parallax-image").on("change", function (event, angle) {
 });
 
 
-let gyroscope = new Gyroscope({ frequency: 60});
+//let gyroscope = new Gyroscope({ frequency: 60});
+//
+//gyroscope.setEventListener("reading", () => {
+    //document.getElementById("output1").textContent = gyroscope.x + "<-->" + gyroscope.y;
+  //});
+//
+//gyroscope.start();
 
-gyroscope.setEventListener("reading", () => {
-    document.getElementById("output1").textContent = gyroscope.x + "<-->" + gyroscope.y;
-  });
+window.addEventListener("deviceorientation", handleOrientation);
 
-gyroscope.start();
+function handleOrientation(event) {
+  var beta = event.beta;
+  var gamma = event.gamma;
+  var alpha = event.alpha;
+  document.getElementById("output1").textContent = beta + " " + gamma + " " +alpha;
+  
+}
