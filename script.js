@@ -22,30 +22,32 @@ $(".parallax-image").on("change", function (event, angle) {
   document.getElementById("output").textContent =
     angle.tiltX + "<-->" + angle.tiltY;
 
-    if ((Number(angle.tiltX) > 4 && Number(angle.tiltY) > 4) || (Number(angle.tiltX) > 0 && Number(angle.tiltY) > 5)) {
-      console.log($(this));
-      $(this).css("background-image", "url(" + image2 + ")");
-    } else {
-      $(this).css("background-image", "url(" + originalImageURL + ")");
-    }
-    
+  if (
+    (Number(angle.tiltX) > 4 && Number(angle.tiltY) > 4) ||
+    (Number(angle.tiltX) > 0 && Number(angle.tiltY) > 5)
+  ) {
+    console.log($(this));
+    $(this).css("background-image", "url(" + image2 + ")");
+  } else {
+    $(this).css("background-image", "url(" + originalImageURL + ")");
+  }
 });
 
+let gyroscope = new Gyroscope({ frequency: 60 });
 
-//let gyroscope = new Gyroscope({ frequency: 60});
-//
-//gyroscope.setEventListener("reading", () => {
-    //document.getElementById("output1").textContent = gyroscope.x + "<-->" + gyroscope.y;
-  //});
-//
-//gyroscope.start();
+gyroscope.setEventListener("reading", () => {
+  document.getElementById("output1").textContent =
+    gyroscope.x + "<-->" + gyroscope.y;
+});
 
-window.addEventListener("deviceorientation", handleOrientation);
+gyroscope.start();
 
-function handleOrientation(event) {
-  var beta = event.beta;
-  var gamma = event.gamma;
-  var alpha = event.alpha;
-  document.getElementById("output1").textContent = beta + " " + gamma + " " +alpha;
-  
-}
+//window.addEventListener("deviceorientation", handleOrientation);
+
+//function handleOrientation(event) {
+//var beta = event.beta;
+// var gamma = event.gamma;
+// var alpha = event.alpha;
+//document.getElementById("output1").textContent = beta + " " + gamma + " " +alpha;
+
+//}
