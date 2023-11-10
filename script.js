@@ -35,19 +35,18 @@ $(".parallax-image").on("change", function (event, angle) {
 
 let sensor = new Gyroscope();
 let x, y, z, report;
-//sensor.setEventListener("reading", () => {
-  //document.getElementById("output1").textContent =
-  //  sensor.x + "<-->" + sensor.y;
-//});
+sensor.addEventListener("reading", () => {
+  document.getElementById("output1").textContent = sensor.x + "<-->" + sensor.y;
+});
 
 sensor.start();
-sensor.onreading = () => {
-  sensor.getElementById("output1").textContent =
-    sensor.x + "<-->" + sensor.y;
-}
-function errprHandler(event) {
-  console.log(event.error.name, event.error.message);
-}
+//sensor.onreading = () => {
+//sensor.getElementById("output1").textContent =
+//sensor.x + "<-->" + sensor.y;
+//}
+//function errorHandler(event) {
+//console.log(event.error.name, event.error.message);
+//}
 
 //window.addEventListener("deviceorientation", handleOrientation);
 
