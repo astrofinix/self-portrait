@@ -33,13 +33,30 @@ $(".parallax-image").on("change", function (event, angle) {
   }
 });
 
-let sensor = new Gyroscope();
-let x, y, z, report;
-sensor.addEventListener("reading", () => {
-  document.getElementById("output1").textContent = sensor.x + "<-->" + sensor.y;
-});
+// let sensor = new Gyroscope();
+// let x, y, z, report;
+// sensor.addEventListener("reading", () => {
+//   document.getElementById("output1").textContent = sensor.x + "<-->" + sensor.y;
+// });
 
-sensor.start();
+// sensor.start();
+
+if ('Gyroscope' in window) {
+  let gyroscope = new Gyroscope({ frequency: 60 });
+
+  gyroscope.addEventListener("reading", () => {
+    document.getElementById("output1").textContent = 
+      `Angular velocity along the X-axis: ${gyroscope.x}, Angular velocity along the Y-axis: ${gyroscope.y}`;
+  });
+
+  gyroscope.addEventListener("error", (event) => {
+    console.error("Error accessing gyroscope:", event.error);
+  });
+
+  gyroscope.start();
+} else {
+  document.getElementById("output1").textContent = "Gyroscope not supported on this device/browser.";
+}
 //sensor.onreading = () => {
 //sensor.getElementById("output1").textContent =
 //sensor.x + "<-->" + sensor.y;
