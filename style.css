@@ -54,9 +54,10 @@ section .inner {
   overflow-y: hidden;
 }
 .desc {
-  margin-left: 30rem;
-  margin-right: 30rem;
-  font-size: 2rem;
+  font-size: clamp(1rem, 5vw, 1.5rem);
+  margin-left: 20vw;
+  margin-right: 20vw;
+  font-family: "Cormorant Garamond", serif;
 }
 section .bg {
   display: flex;
@@ -115,6 +116,7 @@ h2 * {
   box-shadow: 1px 3px 15px rgba(0, 0, 0, 0.5);
 }
 .center {
+  font-size: clamp(1rem, 5vw, 3rem);
   display: flex;
   justify-content: center;
   align-items: center;
