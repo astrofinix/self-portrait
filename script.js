@@ -1,12 +1,27 @@
 const originalImageURL = "./img/base.webp"
 const image2 = "./img/word.webp"
-const image3 =
-  "https://images.metmuseum.org/CRDImages/ep/original/DT1502_cropped2.jpg";
-const image4 = "https://iiif.micr.io/Rgwlg/full/1280,/0/default.jpg";
+const image3 = "./img/van.webp"
+const image4 = "./img/dep.webp";
 const image5 ="./img/meme.webp"
 const image6 = "./img/raw.png"
-const image7 =
-  "https://assets1.cbsnewsstatic.com/hub/i/2011/06/21/40c3e006-a643-11e2-a3f0-029118418759/Netherlands_Van_Goghs_Bro.JPEG";
+const image7 = "./img/man.webp"
+
+const preloadImages = [
+  originalImageURL,
+  image2,
+  image3,
+  image4,
+  image5,
+  image6,
+  image7
+];
+
+preloadImages.forEach(function (src) {
+  const img = new Image();
+  img.src = src;
+});
+
+// Your existing code
 $(document).ready(function () {
   // Initialize Tilt.js on the parallax-image element
   $(".parallax-image").tilt({
