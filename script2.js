@@ -1,87 +1,75 @@
-(function () {
-  function e() {
-    window.addEventListener(
-      "MozOrientation",
-      function (c) {
-        d.push("MozOrientation"),
-          (a.x = c.x - b.x),
-          (a.y = c.y - b.y),
-          (a.z = c.z - b.z);
-      },
-      !0
-    ),
-      window.addEventListener(
-        "devicemotion",
-        function (c) {
-          d.push("devicemotion"),
-            (a.x = c.accelerationIncludingGravity.x - b.x),
-            (a.y = c.accelerationIncludingGravity.y - b.y),
-            (a.z = c.accelerationIncludingGravity.z - b.z);
-        },
-        !0
-      ),
-      window.addEventListener(
-        "deviceorientation",
-        function (c) {
-          d.push("deviceorientation"),
-            (a.alpha = c.alpha - b.alpha),
-            (a.beta = c.beta - b.beta),
-            (a.gamma = c.gamma - b.gamma);
-        },
-        !0
-      );
-  }
-  var a = { x: null, y: null, z: null, alpha: null, beta: null, gamma: null },
-    b = { x: 0, y: 0, z: 0, alpha: 0, beta: 0, gamma: 0 },
-    c = null,
-    d = [];
-  (window.gyro = {}),
-    (gyro.frequency = 500),
-    (gyro.calibrate = function () {
-      for (var c in a) b[c] = typeof a[c] == "number" ? a[c] : 0;
-    }),
-    (gyro.getOrientation = function () {
-      return a;
-    }),
-    (gyro.startTracking = function (b) {
-      c = setInterval(function () {
-        b(a);
-      }, gyro.frequency);
-    }),
-    (gyro.stopTracking = function () {
-      clearInterval(c);
-    }),
-    (gyro.hasFeature = function (a) {
-      for (var b in d) if (a == d[b]) return !0;
-      return !1;
-    }),
-    (gyro.getFeatures = function () {
-      return d;
-    }),
-    e();
-})(window);
+gsap.registerPlugin(Observer);
 
-gyro.startTracking(function (o) {
-  var b = document.getElementById("example"),
-    f = document.getElementById("features");
-  f.innerHTML = gyro.getFeatures();
-  b.innerHTML =
-    "<p> x = " +
-    o.x +
-    "</p>" +
-    "<p> y = " +
-    o.y +
-    "</p>" +
-    "<p> z = " +
-    o.z +
-    "</p>" +
-    "<p> alpha = " +
-    o.alpha +
-    "</p>" +
-    "<p> beta = " +
-    o.beta +
-    "</p>" +
-    "<p> gamma = " +
-    o.gamma +
-    "</p>";
+let sections = document.querySelectorAll("section"),
+  images = document.querySelectorAll(".bg"),
+  headings = gsap.utils.toArray(".section-heading"),
+  outerWrappers = gsap.utils.toArray(".outer"),
+  innerWrappers = gsap.utils.toArray(".inner"),
+  splitHeadings = headings.map(heading => new SplitText(heading, { type: "chars,words,lines", linesClass: "clip-text" })),
+  currentIndex = -1,
+  wrap = gsap.utils.wrap(0, sections.length),
+  animating;
+
+gsap.set(outerWrappers, { yPercent: 100 });
+gsap.set(innerWrappers, { yPercent: -100 });
+
+function gotoSection(index, direction) {
+  index = wrap(index); // make sure it's valid
+  animating = true;
+  let fromTop = direction === -1,
+      dFactor = fromTop ? -1 : 1,
+      tl = gsap.timeline({
+        defaults: { duration: 1.25, ease: "power1.inOut" },
+        onComplete: () => animating = false
+      });
+  if (currentIndex >= 0) {
+    // The first time this function runs, current is -1
+    gsap.set(sections[currentIndex], { zIndex: 0 });
+    tl.to(images[currentIndex], { yPercent: -15 * dFactor })
+      .set(sections[currentIndex], { autoAlpha: 0 });
+  }
+  gsap.set(sections[index], { autoAlpha: 1, zIndex: 1 });
+  tl.fromTo([outerWrappers[index], innerWrappers[index]], { 
+      yPercent: i => i ? -100 * dFactor : 100 * dFactor
+    }, { 
+      yPercent: 0 
+    }, 0)
+    .fromTo(images[index], { yPercent: 15 * dFactor }, { yPercent: 0 }, 0)
+    .fromTo(splitHeadings[index].chars, { 
+        autoAlpha: 0, 
+        yPercent: 150 * dFactor
+    }, {
+        autoAlpha: 1,
+        yPercent: 0,
+        duration: 1,
+        ease: "power2",
+        stagger: {
+          each: 0.02,
+          from: "random"
+        }
+      }, 0.2);
+
+  currentIndex = index;
+}
+
+Observer.create({
+  type: "wheel,touch,pointer",
+  wheelSpeed: -1,
+  onDown: () => !animating && gotoSection(currentIndex - 1, -1),
+  onUp: () => !animating && gotoSection(currentIndex + 1, 1),
+  tolerance: 10,
+  preventDefault: true
 });
+
+// Add event listeners for arrow keys
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowUp') {
+    !animating && gotoSection(currentIndex - 1, -1);
+  } else if (e.key === 'ArrowDown') {
+    !animating && gotoSection(currentIndex + 1, 1);
+  }
+});
+
+gotoSection(0, 1);
+// original: https://codepen.io/BrianCross/pen/PoWapLP
+// horizontal version: https://codepen.io/GreenSock/pen/xxWdeMK
