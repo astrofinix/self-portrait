@@ -29,14 +29,14 @@
 //       .set(sections[currentIndex], { autoAlpha: 0 });
 //   }
 //   gsap.set(sections[index], { autoAlpha: 1, zIndex: 1 });
-//   tl.fromTo([outerWrappers[index], innerWrappers[index]], { 
+//   tl.fromTo([outerWrappers[index], innerWrappers[index]], {
 //       yPercent: i => i ? -100 * dFactor : 100 * dFactor
-//     }, { 
-//       yPercent: 0 
+//     }, {
+//       yPercent: 0
 //     }, 0)
 //     .fromTo(images[index], { yPercent: 15 * dFactor }, { yPercent: 0 }, 0)
-//     .fromTo(splitHeadings[index].chars, { 
-//         autoAlpha: 0, 
+//     .fromTo(splitHeadings[index].chars, {
+//         autoAlpha: 0,
 //         yPercent: 150 * dFactor
 //     }, {
 //         autoAlpha: 1,
@@ -82,12 +82,12 @@ const touch = {
   dx: 0,
   dy: 0,
   startTime: 0,
-  dt: 0
+  dt: 0,
 };
 
 const tlDefaults = {
   ease: "slow.inOut",
-  duration: 1.25
+  duration: 1.25,
 };
 
 gsap.set(outerWrappers, { yPercent: 100 });
@@ -106,7 +106,7 @@ function slideIn() {
       onComplete: () => {
         listening = true;
         current = next;
-      }
+      },
     })
     .to([outerWrappers[next], innerWrappers[next]], { yPercent: 0 }, 0)
     .from(images[next], { yPercent: 15 }, 0);
@@ -115,7 +115,7 @@ function slideIn() {
     tl.add(
       gsap.to(images[current], {
         yPercent: -15,
-        ...tlDefaults
+        ...tlDefaults,
       }),
       0
     ).add(
@@ -145,30 +145,14 @@ function slideOut() {
       onComplete: () => {
         listening = true;
         current = next;
-      }
+      },
     })
     .to(outerWrappers[current], { yPercent: 100 }, 0)
     .to(innerWrappers[current], { yPercent: -100 }, 0)
     .to(images[current], { yPercent: 15 }, 0)
     .from(images[next], { yPercent: -15 }, 0)
-    
+
     .set(images[current], { yPercent: 0 });
-}
-
-function handleDirection() {
-  listening = false;
-
-  if (direction === "down") {
-    next = current + 1;
-    if (next >= sections.length) next = 0;
-    slideIn();
-  }
-
-  if (direction === "up") {
-    next = current - 1;
-    if (next < 0) next = sections.length - 1;
-    slideOut();
-  }
 }
 
 function handleWheel(e) {
@@ -202,14 +186,12 @@ function handleTouchEnd(e) {
 slideIn();
 
 document.getElementById("bottom").addEventListener("click", () => {
- next = sections.length - 1;
+  next = sections.length - 1;
   slideIn();
-   
 });
 document.getElementById("top").addEventListener("click", () => {
- next = 0;
+  next = 0;
   slideOut();
-   
 });
 
 function openNav() {
@@ -221,18 +203,31 @@ function closeNav() {
   document.getElementById("mySidebar").style.width = "0";
   document.getElementById("main").style.marginLeft = "0";
 }
+function handleDirection() {
+  listening = false;
 
-// original: https://codepen.io/BrianCross/pen/PoWapLP
-
-// Add event listeners for arrow keys
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'ArrowUp') {
-    !animating && gotoSection(currentIndex - 1, -1);
-  } else if (e.key === 'ArrowDown') {
-    !animating && gotoSection(currentIndex + 1, 1);
+  if (direction === "down") {
+    next = current + 1;
+    if (next >= sections.length) next = 0;
+    slideIn();
   }
-});
 
-gotoSection(0, 1);
-// original: https://codepen.io/BrianCross/pen/PoWapLP
-// horizontal version: https://codepen.io/GreenSock/pen/xxWdeMK
+  if (direction === "up") {
+    next = current - 1;
+    if (next < 0) next = sections.length - 1;
+    slideOut();
+  }
+    
+  // document.addEventListener("keydown", function (e) {
+  //   if (e.key === "ArrowUp") {
+  //     next = current - 1;
+  //     if (next < 0) next = sections.length - 1;
+  //     slideOut();
+  //   } else if (e.key === "ArrowDown") {
+  //     next = current + 1;
+  //     if (next >= sections.length) next = 0;
+  //     slideIn();
+  //   }
+  // });
+}
+// gotoSection(0, 1);
