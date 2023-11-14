@@ -55,9 +55,11 @@ section .inner {
 }
 .desc {
   font-size: clamp(1rem, 5vw, 1.5rem);
-  margin-left: 20vw;
-  margin-right: 20vw;
+  margin-left: 15vw;
+  margin-right: 15vw;
   font-family: "Cormorant Garamond", serif;
+  width: 90vw;
+  max-width: 1200px;
 }
 section .bg {
   display: flex;
